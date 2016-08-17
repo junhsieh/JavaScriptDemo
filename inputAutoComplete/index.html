@@ -1,0 +1,74 @@
+<html>
+  <head>
+<link rel="stylesheet" href="../lib/jquery-ui/jquery-ui-1.12.0/jquery-ui.min.css">
+
+<script src="../lib/jquery-ui/jquery-ui-1.12.0/external/jquery/jquery.js"></script>
+<script src="../lib/jquery-ui/jquery-ui-1.12.0/jquery-ui.min.js"></script>
+
+<script>
+$(document).ready(function(){
+  $('#DealerName').on('focus', function(event){
+    $(this).select();
+  });
+
+  $('#DealerName').autocomplete({
+    minLength: 1,
+    autoFocus: true,
+    source: function (request, response) {
+      var optObj = {
+        DealerName: request.term,
+      };
+
+      $.ajax({url: 'data.html', data: optObj, dataType: 'json'
+        }).done(function(dataObj){
+          response(dataObj);
+        }).fail(function(dataObj){
+          response([]);
+        }).always(function(dataObj) {
+        });
+    },
+    create: function(event, ui) {
+      event.preventDefault();
+
+      $(this).autocomplete('widget').css({
+        height: 200,
+        'overflow-x': 'hidden',
+        'overflow-y': 'scroll',
+      });
+
+      $(this).data('ui-autocomplete')._renderItem = function(ul, item) {
+        return $('<li>')
+          .attr('data-value', item.DealerName)
+          .append('<a>' + item.DealerName + '</a>')
+          .appendTo(ul);
+      };
+
+      $(this).data('ui-autocomplete')._resizeMenu = function() {
+        this.menu.element.outerWidth(500);
+      };
+
+      return false;
+    },
+    focus: function(event, ui) {
+      event.preventDefault();
+
+      $(this).val(ui.item.DealerName);
+
+      return false;
+    },
+    select: function(event, ui) {
+      event.preventDefault();
+
+      $(this).val(ui.item.DealerName);
+
+      return false;
+    },
+  });
+});
+</script>
+
+  </head>
+  <body>
+    <input id="DealerName" />
+  </body>
+</html>
