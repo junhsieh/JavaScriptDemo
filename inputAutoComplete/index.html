@@ -27,6 +27,32 @@ $(document).ready(function(){
         }).always(function(dataObj) {
         });
     },
+    // the following code shows how to use local data and filtered out the duplicated items.
+    //source: function(request, response) {
+    //  // collecting inputed itemNum
+    //  var inputtedIDItem = [];
+
+    //  for (var i = 0; i < mNumOfLine; i++) {
+    //    var val = $('[id="MP_' + i + '_IDItem"]').val();
+
+    //    if (val != "") {
+    //      inputtedIDItem.push(val);
+    //    }
+    //  }
+
+    //  //
+    //  var matcher = new RegExp('^' + $.ui.autocomplete.escapeRegex(request.term), 'i');
+
+    //  response($.grep(modelNumNameArr, function(item){
+    //    for (var i = 0; i < inputtedIDItem.length; i++) {
+    //      if (inputtedIDItem[i] == item.IDItem) {
+    //        return false;
+    //      }
+    //    }
+
+    //    return matcher.test(item.ItemNum) || matcher.test(item.ItemName);
+    //  }));
+    //},
     create: function(event, ui) {
       event.preventDefault();
 
