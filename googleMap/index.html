@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Simple Map</title>
+		<meta name="viewport" content="initial-scale=1.0">
+		<meta charset="utf-8">
+		<style>
+/* Always set the map height explicitly to define the size of the div
+ * element that contains the map. */
+#map {
+	height: 100%;
+}
+			/* Optional: Makes the sample page fill the window. */
+			html, body {
+				height: 100%;
+				margin: 0;
+				padding: 0;
+			}
+		</style>
+		<script src="/JavaScriptDemo/lib/jquery-ui/jquery-ui-1.12.0/external/jquery/jquery.js"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer></script>
+		<script src="/JavaScriptDemo/googleMap/markerclusterer.js"></script>
+		<script>
+var data = {
+	points: [
+	{lat: 37.4119, lng: -122.1419, idDealer: 1, dealerName: 'test 1', salesDiff: 100},
+	{lat: 37.4219, lng: -122.1419, idDealer: 2, dealerName: 'test 2', salesDiff: -100},
+	{lat: 37.4319, lng: -122.1419, idDealer: 3, dealerName: 'test 3', salesDiff: 100},
+	{lat: 37.4419, lng: -122.1419, idDealer: 4, dealerName: 'test 4', salesDiff: -100},
+	{lat: 37.4519, lng: -122.1419, idDealer: 5, dealerName: 'test 5', salesDiff: 100},
+	{lat: 37.4619, lng: -122.1419, idDealer: 6, dealerName: 'test 6', salesDiff: -100},
+	{lat: 37.4719, lng: -122.1419, idDealer: 7, dealerName: 'test 7', salesDiff: 100},
+	{lat: 37.4819, lng: -122.1419, idDealer: 8, dealerName: 'test 8', salesDiff: 100},
+	{lat: 50.450509, lng: -104.941406, idDealer: 8, dealerName: 'test 8', salesDiff: 100},
+	{lat: 50.450509, lng: -104.941406, idDealer: 8, dealerName: 'test 8', salesDiff: 100},
+	{lat: 50.450509, lng: -104.941406, idDealer: 8, dealerName: 'test 8', salesDiff: 100},
+	],
+};
+
+var styles = [
+{
+	"featureType": "administrative.province",
+	"elementType": "geometry.stroke",
+	"stylers": [
+	{ "visibility": "on" },
+	{ "weight": 2.5 },
+	{ "color": "#24b0e2" }
+	]
+},{
+	"featureType": "road",
+	"elementType": "geometry",
+	"stylers": [
+	{ "visibility": "off" }
+	]
+},{
+	"featureType": "administrative.locality",
+	"stylers": [
+	{ "visibility": "off" }
+	]
+},{
+	"featureType": "road",
+	"elementType": "labels",
+	"stylers": [
+	{ "visibility": "off" }
+	]
+}
+];
+		</script>
+		<script>
+var map;
+
+var infowindow;
+
+function initMap() {
+	map = new google.maps.Map(document.getElementById('map'), {
+		center: {lat: 50.450509, lng: -104.941406},
+		zoom: 4,
+		minZoom: 4,
+		maxZoom: 4,
+		//styles:styles,
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+	});
+
+	infowindow = new google.maps.InfoWindow();
+
+	var markers = [];
+	for (var i = 0; i < data.points.length; i++) {
+		var latLng = new google.maps.LatLng(data.points[i].lat, data.points[i].lng);
+		var marker = new google.maps.Marker({
+			position: latLng,
+		});
+
+		// (preferred) infowindow mouseover - version 2
+		// without passing map, marker to the closure function.
+		google.maps.event.addListener(marker, 'mouseover', setInfoWindowContent_v2(infowindow));
+
+		markers.push(marker);
+	}
+	var markerCluster = new MarkerClusterer(map, markers, {
+		imagePath: '/JavaScriptDemo/googleMap/images/m',
+	});
+
+	google.maps.event.addListener(markerCluster, 'mouseover', function(_cluster) {
+		console.log('okkk' + _cluster.getCenter());
+		infowindow.setPosition(_cluster.getCenter());
+		infowindow.setContent('how are you today?<p>we have more news for your?</p><p><a href="http://google.com" target="_blank">what is hot?</a></p>');
+		infowindow.open(this.map, this);
+	});
+	//google.maps.event.addListener(markerCluster, 'mouseover', setInfoWindowContent_v2(infowindow));
+
+      // Read the data from states.xml
+      //var request = GXmlHttp.create();
+      //request.open("GET", "states.xml", true);
+      //request.onreadystatechange = function() {
+      //  if (request.readyState == 4) {
+      //    var xmlDoc = GXml.parse(request.responseText);
+      //    // ========= Now process the polylines ===========
+      //    var states = xmlDoc.documentElement.getElementsByTagName("state");
+
+      //    // read each line
+      //    for (var a = 0; a < states.length; a++) {
+      //      // get any state attributes
+      //      var label  = states[a].getAttribute("name");
+      //      var colour = states[a].getAttribute("colour");
+      //      // read each point on that line
+      //      var points = states[a].getElementsByTagName("point");
+      //      var pts = [];
+      //      for (var i = 0; i < points.length; i++) {
+      //         pts[i] = new GLatLng(parseFloat(points[i].getAttribute("lat")),
+      //                             parseFloat(points[i].getAttribute("lng")));
+      //      }
+      //      var poly = new GPolygon(pts,"#000000",1,1,colour,0.5,{clickable:false});
+      //      polys.push(poly);
+      //      labels.push(label);
+      //      map.addOverlay(poly);
+      //    }
+      //    // ================================================           
+      //  }
+      //}
+      //request.send(null);
+
+	  // Read the data from example.xml
+	  $.ajax({
+	      type: "GET",
+	      async: true,
+	      url: "/JavaScriptDemo/googleMap/states.xml",
+	      dataType: "xml",
+	      success: function (xml) {
+	    	  // Parse the xml file and get data
+	    	  // var xmlDoc = $.parseXML(xml);
+	    	  // var xml = xmlParse(doc);
+	    	  var states = xml.documentElement.getElementsByTagName("state");
+	    	  for (var a = 0; a < states.length; a++) {
+	    		  // get any state attributes
+	    		  var label  = states[a].getAttribute("name");
+	    		  var colour = states[a].getAttribute("colour");
+	    		  // read each point on that line
+	    		  var points = states[a].getElementsByTagName("point");
+	    		  var pts = [];
+	    		  for (var i = 0; i < points.length; i++) {
+	    			  var latLng = new google.maps.LatLng(parseFloat(points[i].getAttribute("lat")), parseFloat(points[i].getAttribute("lng")));
+	    			  //pts[i] = new GLatLng(parseFloat(points[i].getAttribute("lat")), parseFloat(points[i].getAttribute("lng")));
+	    			  pts[i] = latLng;
+	    		  }
+				  var bermudaTriangle = new google.maps.Polygon({
+					  paths: pts,
+					  strokeColor: '#FF0000',
+					  strokeOpacity: 0.8,
+					  strokeWeight: 2,
+					  fillColor: colour,
+					  fillOpacity: 0.35
+				  });
+				  bermudaTriangle.setMap(map);
+	    		  //var poly = new google.maps.Polygon(pts,"#000000",1,1,colour,0.5,{clickable:false});
+				  //poly.setMap(map);
+
+	    		  //polys.push(poly);
+	    		  //labels.push(label);
+	    		  //map.addOverlay(poly);
+	    		  //    // obtain the attribues of each marker
+	    		  //    var lat = parseFloat(markers[i].getAttribute("lat"));
+	    		  //    var lng = parseFloat(markers[i].getAttribute("lng"));
+	    		  //    var point = new google.maps.LatLng(lat,lng);
+	    		  //    var id = markers[i].getAttribute("id");
+	    		  //    var country = markers[i].getAttribute("country");
+	    		  //    var html="<b>"+country+"</b><br>"+id;
+	    		  //    // create the marker
+	    		  //    var marker = createMarker(point,country+" "+id,html);
+	    		  }
+	    		  //markerCluster = new MarkerClusterer(map, gmarkers, { 
+	    		  //    imagePath: 'https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m' 
+	    		  //});
+	      //// put the assembled side_bar_html contents into the side_bar div
+	      //document.getElementById("side_bar").innerHTML = side_bar_html;
+	      },
+	  });
+
+}
+
+function setInfoWindowContent_v2(infowindow) {
+	return function() {
+		infowindow.setContent(this.mystr);
+		infowindow.open(this.map, this);
+	}
+}
+		</script>
+	</head>
+	<body>
+		<div id="map"></div>
+	</body>
+</html>
