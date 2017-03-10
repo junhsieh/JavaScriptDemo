@@ -64,7 +64,7 @@ var levelMap = [
 			[' ', 'R', 'R', 'R', 'R', 'R', ' ', ' ', ' ', ' '],
 			[' ', 'R', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
 			[' ', 'R', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-			[' ', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R'],
+			[' ', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'E'],
 		],
 	},
 ];
@@ -193,7 +193,10 @@ function moveY(obj, y) {
 	if (tmpY >= 0 && tmpY < MAP_H
 		&& levelMap[0].data[tmpY][obj.left] == 'R') {
 		obj.top += y;
+		return true;
 	}
+
+	return false;
 }
 
 window.onload = function() {
