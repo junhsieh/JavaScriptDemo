@@ -121,7 +121,7 @@ function startwave() {
 
 	interval_id = setInterval(function() {
 		moveAhead(minion);
-	}, 1000);
+	}, 200);
 	//console.log(minion);
 }
 

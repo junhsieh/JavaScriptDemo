@@ -33,7 +33,8 @@
 
 .minion
 {
-	background-color: #000000;
+	/*background-color: #000000;*/
+	background-image: url('/JavaScriptDemo/game/simpleTowerDefense/shop.png?time=1');
 	position: absolute;
 	width: 10px; height: 10px;
 	-moz-border-radius: 8px;
