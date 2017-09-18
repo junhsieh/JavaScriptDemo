@@ -10,5 +10,6 @@ JavaScript Demo
         }).done(function(data, textStatus, jqXHR) {
         }).fail(function(jqXHR, textStatus, errorThrown) {
         }).always(function(data, textStatus, errorThrown) {
+        //}).then(function(data, textStatus, jqXHR) {
         });
 ```
