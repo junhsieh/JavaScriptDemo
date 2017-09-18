@@ -3,6 +3,12 @@ JavaScript Demo
 
 ```
 $(document).ready(function() {
+		// global setting
+		$.ajaxSetup({
+			contentType: 'application/json',
+		});
+
+		//
         $('#userFormSubmit').on('click', function(event){
             event.preventDefault();
 
