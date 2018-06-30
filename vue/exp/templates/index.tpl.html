@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+
+        <!-- import jQuery.js -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+        <!-- import Vue.js -->
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <!-- import axios.js -->
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <!-- import stylesheet -->
+        <link rel="stylesheet" href="//unpkg.com/iview/dist/styles/iview.css">
+        <!-- import iView -->
+        <script src="//unpkg.com/iview/dist/iview.min.js"></script>
+        <script src="//unpkg.com/iview/dist/locale/en-US.js"></script>
+    </head>
+
+    <body>
+        <div id="app">
+            <Icon type="social-tux" size="60"></Icon>
+            <Icon type="social-freebsd-devil" size="60"></Icon>
+            <Icon type="thumbsup" size="60"></Icon>
+
+            <i-button @click="show">Click me!</i-button>
+            <Modal v-model="visible" title="Welcome">Welcome to iView</Modal>
+
+            <br />
+            <order-form :person="Person" :disableform1="DisableForm1" :disableform2="DisableForm2" :ruleinline="ruleInline"></order-form>
+        </div>
+    </body>
+
+</html>
+
