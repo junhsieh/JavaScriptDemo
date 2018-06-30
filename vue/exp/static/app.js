@@ -1,7 +1,7 @@
 /*global jQuery Vue axios iview*/
 
-(function ($jq, Vue, axios, iview) {
-    $jq(document).ready(function () {
+(function($jq, Vue, axios, iview) {
+    $jq(document).ready(function() {
         InitVue();
     });
 
@@ -35,9 +35,9 @@
                                 clearable="clearable"
                             >
                                 <Option
-                                    v-for="item in $root.$data.SelectOptions.Person.ItemNoteLanguage[note.ID]"
-                                    :value="item.ID"
+                                    v-for="(item, index) of $root.$data.SelectOptions.Person.ItemNoteLanguage[note.ID]"
                                     :key="item.ID"
+                                    :value="item.ID"
                                     :label="item.Text1"
                                 >
                                     <span>{{ item.Text1 }}</span>
@@ -52,14 +52,12 @@
                                 @change="doSomething3"
                                 filterable="filterable"
                                 clearable="clearable"
-                                remote="remote"
-                                :remote-method="remoteMethod1"
-                                :loading="loading1"
+                                ref="noteEditor"
                             >
                                 <Option
-                                    v-for="item in asdf2"
+                                    v-for="(item, index) of $root.$data.SelectOptions.Person.ItemNoteEditor[this.note.Language]"
+                                    :key="note.Language + '_' + item.ID"
                                     :value="item.ID"
-                                    :key="item.ID"
                                     :label="item.Text1"
                                 >
                                     <span>{{ item.Text1 }}</span>
@@ -75,28 +73,22 @@
                     </Row>
                 </FormItem>
             `,
-            data: function () {
+            data: function() {
                 return {
                     //myshow: true,
                     //ItemNoteLanguage: [],
                     //ItemNoteEditor: [],
-                    asdf2: [],
-                    loading1: false,
                 };
             },
             methods: {
-                remoteMethod1: function () {
-                    this.loading1 = true;
-                    this.asdf2 = this.$root.$data.SelectOptions.Person.ItemNoteEditor[this.note.Language];
-                    this.loading1 = false;
-                },
-                doSomething1: function () {
+                doSomething1: function() {
                     console.log('inside doSomething1: ' + this.note.Language);
 
-                    this.loading1 = true;
-                    this.asdf2 = this.$root.$data.SelectOptions.Person.ItemNoteEditor[this.note.Language];
-                    this.loading1 = false;
-                    this.note.Editor = 0;
+                    //this.note.Editor = '1';
+                    this.$refs.noteEditor.clearSingleSelect();
+
+
+                    //this.$set(this.note, 'Editor', '1');
 
                     //this.$set(asdf2, this.$root.$data.SelectOptions.Person.ItemNoteEditor[this.note.Language]);
                     //this.asdf2.$set();
@@ -121,35 +113,15 @@
                     //    })
                     //})
                 },
-                doSomething2: function () {
+                doSomething2: function() {
                     console.log('inside doSomething2: ' + this.note.Language);
                 },
-                doSomething3: function () {
+                doSomething3: function() {
                     console.log('inside doSomething3: ' + this.note.Language);
-                },
-                ItemNoteLanguage2222: function () {
-                    if (this.note.ID in this.$root.$data.SelectOptions.Person.ItemNoteLanguage) {
-                        return this.$root.$data.SelectOptions.Person.ItemNoteLanguage[this.note.ID];
-                    }
-
-                    return [
-                        { ID: 0, Text1: 'not yet 0', Text2: 'not yet 0' },
-                    ];
-                },
-                ItemNoteEditor2222: function () {
-                    console.log('Triggered: ' + this.note.Language);
-
-                    if (this.note.Language in this.$root.$data.SelectOptions.Person.ItemNoteEditor) {
-                        return this.$root.$data.SelectOptions.Person.ItemNoteEditor[this.note.Language];
-                    }
-
-                    return [
-                        { ID: 0, Text1: 'not yet 0', Text2: 'not yet 0' },
-                    ];
                 },
             },
             watch: {
-                'note.Language': function (newVal, oldVal) {
+                'note.Language': function(newVal, oldVal) {
                     if (this.note.Language in this.$root.$data.SelectOptions.Person.ItemNoteEditor) {
                         //this.ItemNoteEditor = this.$root.$data.SelectOptions.Person.ItemNoteEditor[this.note.Language];
                     }
@@ -159,10 +131,8 @@
                     //console.log( this.ItemNoteEditor );
                 },
             },
-            mounted: function () {
-                this.asdf2 = this.asdf;
-            },
-            props: ['note', 'asdf'],
+            mounted: function() {},
+            props: ['note'],
         });
 
         Vue.component('order-list', {
@@ -205,7 +175,6 @@
                             <note-list v-for="(note, index) of item.NoteArr"
                                 :key="note.ID"
                                 :note="note"
-                                :asdf="$root.$data.SelectOptions.Person.ItemNoteEditor[note.Language]"
                                 @removenotetry="removeNote(index, ...arguments)"
                             ></note-list>
                         </Col>
@@ -219,7 +188,7 @@
             `,
             watch: {},
             methods: {
-                addNote: function (event, itemindex) {
+                addNote: function(event, itemindex) {
                     event.preventDefault();
 
                     let l = this.$root.$data.Person.ItemArr[itemindex].NoteArr.length;
@@ -230,7 +199,7 @@
                         Editor: 0,
                     });
                 },
-                removeNote: function (itemIndex, event) {
+                removeNote: function(itemIndex, event) {
                     event.preventDefault();
 
                     this.item.NoteArr.splice(itemIndex, 1);
@@ -285,7 +254,7 @@
                 </Form>
             `,
             methods: {
-                AddPersonItem: function (event) {
+                AddPersonItem: function(event) {
                     event.preventDefault();
 
                     this.person.ItemArr.push({
@@ -297,7 +266,7 @@
                         NoteArr: [],
                     });
                 },
-                removeitem: function (index, event, a, b) {
+                removeitem: function(index, event, a, b) {
                     event.preventDefault();
 
                     a;
@@ -310,7 +279,7 @@
                         this.person.ItemArr[i].ID = i;
                     }
                 },
-                personSave2: function (e) {
+                personSave2: function(e) {
                     e.preventDefault();
 
                     let _this = this;
@@ -319,9 +288,9 @@
                     console.log(_this.person);
 
                     _this.$http.post('/api/personform', _this.person)
-                        .then(function (response) {
+                        .then(function(response) {
                             console.log(response.data.result[0].data);
-                        }).catch(function (error) {
+                        }).catch(function(error) {
                             console.log(error);
                         });
                 },
@@ -331,13 +300,13 @@
         });
 
         // Global filters
-        Vue.filter('pretty', function (value) {
+        Vue.filter('pretty', function(value) {
             return JSON.stringify(value, null, 2);
         });
 
         //
         let Main = {
-            data: function () {
+            data: function() {
                 return {
                     DisableForm1: false,
                     DisableForm2: false,
@@ -349,34 +318,70 @@
                     SelectOptions: {
                         Person: {
                             ItemNoteLanguage: {
-                                0: [
-                                    { ID: 1, Text1: 'C 1', Text2: 'CC 1' },
-                                    { ID: 2, Text1: 'C 2', Text2: 'CC 2' },
-                                ],
-                                1: [
-                                    { ID: 1, Text1: 'PHP 1', Text2: 'PHPP 1' },
-                                    { ID: 2, Text1: 'PHP 2', Text2: 'PHPP 2' },
-                                ],
-                                2: [
-                                    { ID: 1, Text1: 'Go 1', Text2: 'Goo 1' },
-                                    { ID: 2, Text1: 'Go 2', Text2: 'Goo 2' },
-                                ],
+                                0: [{
+                                    ID: 1,
+                                    Text1: 'C 1',
+                                    Text2: 'CC 1'
+                                }, {
+                                    ID: 2,
+                                    Text1: 'C 2',
+                                    Text2: 'CC 2'
+                                }],
+                                1: [{
+                                    ID: 1,
+                                    Text1: 'PHP 1',
+                                    Text2: 'PHPP 1'
+                                }, {
+                                    ID: 2,
+                                    Text1: 'PHP 2',
+                                    Text2: 'PHPP 2'
+                                }],
+                                2: [{
+                                    ID: 1,
+                                    Text1: 'Go 1',
+                                    Text2: 'Goo 1'
+                                }, {
+                                    ID: 2,
+                                    Text1: 'Go 2',
+                                    Text2: 'Goo 2'
+                                }],
                             },
                             ItemNoteEditor: {
-                                0: [
-                                    { ID: 1, Text1: 'NotYet 1', Text2: 'NotYet 1' },
-                                    { ID: 2, Text1: 'NotYet 2', Text2: 'NotYet 2' },
-                                ],
-                                1: [
-                                    { ID: 0, Text1: 'NotYet 0', Text2: 'NotYet 0' },
-                                    { ID: 1, Text1: 'Vim 1', Text2: 'Vimm 1' },
-                                    { ID: 2, Text1: 'Vim 2', Text2: 'Vimm 2' },
-                                ],
-                                2: [
-                                    { ID: 0, Text1: 'NotYet 0', Text2: 'NotYet 0' },
-                                    { ID: 1, Text1: 'Notepad 1', Text2: 'Notepadd 1' },
-                                    { ID: 2, Text1: 'Notepad 2', Text2: 'Notepadd 2' },
-                                ],
+                                0: [{
+                                    ID: 1,
+                                    Text1: 'NotYet 1',
+                                    Text2: 'NotYet 1'
+                                }, {
+                                    ID: 2,
+                                    Text1: 'NotYet 2',
+                                    Text2: 'NotYet 2'
+                                }],
+                                1: [{
+                                    ID: 0,
+                                    Text1: 'NotYet 0',
+                                    Text2: 'NotYet 0'
+                                }, {
+                                    ID: 1,
+                                    Text1: 'Vim 1',
+                                    Text2: 'Vimm 1'
+                                }, {
+                                    ID: 2,
+                                    Text1: 'Vim 2',
+                                    Text2: 'Vimm 2'
+                                }],
+                                2: [{
+                                    ID: 0,
+                                    Text1: 'NotYet 0',
+                                    Text2: 'NotYet 0'
+                                }, {
+                                    ID: 1,
+                                    Text1: 'Notepad 1',
+                                    Text2: 'Notepadd 1'
+                                }, {
+                                    ID: 2,
+                                    Text1: 'Notepad 2',
+                                    Text2: 'Notepadd 2'
+                                }],
                             },
                         },
                     },
@@ -390,32 +395,30 @@
                             required: true,
                             message: 'Please fill in the password.',
                             trigger: 'blur'
-                        },
-                        {
+                        }, {
                             type: 'string',
                             min: 6,
                             message: 'The password length cannot be less than 6 bits',
                             trigger: 'blur'
-                        }
-                        ]
+                        }]
                     },
                     html: null,
                 };
             },
             methods: {
-                show: function () {
+                show: function() {
                     this.visible = true;
                 },
             },
             filters: {},
-            render: function (createElement) {
+            render: function(createElement) {
                 if (!this.html) {
                     return createElement('div', 'Loading...');
                 } else {
                     return this.html();
                 }
             },
-            mounted: function () {
+            mounted: function() {
                 let _this = this;
                 let html = `
                 <div>
@@ -438,7 +441,7 @@
         let MainComponent = Vue.extend(Main);
         let vm = new MainComponent().$mount('#app');
 
-        setTimeout(function () {
+        setTimeout(function() {
             let data = {
                 Person: {
                     Name: 'Jun',
@@ -449,8 +452,7 @@
                         ColorArr: ['white', 'red'],
                         IsActive: 1,
                         NoteArr: [],
-                    },
-                    {
+                    }, {
                         ID: 1,
                         Name: 'Banana',
                         Qty: 6,
@@ -471,15 +473,12 @@
                             Name: 'Note 1-2',
                             Language: 0,
                             Editor: 0,
-                        }],
-                    },
-                    ]
-                }
+                        }, ],
+                    }],
+                },
             };
 
             vm.$data.Person = data.Person;
         }, 500);
     }
 })(jQuery, Vue, axios, iview);
-
-
