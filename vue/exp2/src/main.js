@@ -6,6 +6,8 @@ import store from './store'
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
 
+import './assets/highcharts.js';
+
 Vue.config.productionTip = false
 
 Vue.use(iView);
