@@ -15,6 +15,7 @@
     >
 
         <GridItem v-for="(item, key) in layout"
+					:id="'gi_' + item.i"
                    :key="key"
                    :x="item.x"
                    :y="item.y"
@@ -22,6 +23,7 @@
                    :h="item.h"
                    :i="item.i">
             {{item.i}}
+			<div>test</div>
         </GridItem>
     </GridLayout>
   </div>
