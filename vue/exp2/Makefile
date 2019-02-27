@@ -86,3 +86,12 @@ reflex:
 	cd $(REFLEX_DIR) && go mod vendor -v
 	cd $(REFLEX_DIR) && go build -o $(REFLEX) -v -x -mod vendor
 	rm -rf $(REFLEX_DIR)
+
+vue-build:
+	npm run build
+
+vue-watch:
+	npm run watch
+
+vue-lint:
+	npm run lint
