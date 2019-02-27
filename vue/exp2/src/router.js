@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import SalesOrder from './views/SalesOrder.vue'
+import Dashboard from './views/Dashboard.vue'
 
 Vue.use(Router)
 
@@ -10,7 +11,7 @@ export default new Router({
     {
       path: '/',
       name: 'root',
-      redirect: '/SalesOrder',
+      redirect: '/Dashboard',
     },
     {
       path: '/home',
@@ -29,6 +30,11 @@ export default new Router({
       path: '/SalesOrder',
       name: 'SalesOrder',
       component: SalesOrder,
+    },
+    {
+      path: '/Dashboard',
+      name: 'Dashboard',
+      component: Dashboard,
     },
   ]
 })
